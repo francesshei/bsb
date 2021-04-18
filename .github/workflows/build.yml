@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8, 3.9]
-
+        test: [test_placement, test_storage, test_chunks]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -40,5 +40,5 @@ jobs:
     - name: Run tests & coverage
       run: |
         coverage run -p -m unittest discover -v -s ./tests
-        mpiexec --oversubscribe -n 4 coverage run -p -m unittest discover -v -s ./tests
+        mpiexec --oversubscribe -n 4 coverage run -p -m unittest tests.${{ matrix.test }}
         bash <(curl -s https://codecov.io/bash) -t 2f17a47c-ba2a-47c4-9864-c6661afe1f85
